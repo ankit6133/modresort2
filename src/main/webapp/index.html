@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <title>MOD RESORTS (A Transformation Advisor sample application)</title>
+</head>
+
+<script>
+    function showCurrentDate(){
+        var dateObj = new Date();
+        var locale = "en-us";
+        var month = dateObj.toLocaleString(locale,{month: "short"}); //months from 1-12
+        var day = dateObj.getUTCDate();
+        var year = dateObj.getUTCFullYear();
+        return document.write(day + ' ' + month + ' ' + year);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the profile button and profile details div
+        var profileButton = document.getElementById("profileButton");
+        var profileDetails = document.querySelector(".signup-form");
+
+        // Add event listener for the profile button click
+        profileButton.addEventListener("click", function () {
+            // Toggle the visibility of the profile details div
+            if (profileDetails.style.display === "none") {
+                profileDetails.style.display = "block";
+            } else {
+                profileDetails.style.display = "none";
+            }
+        });
+
+
+        // Initialize date pickers
+        var checkinDateInput = document.getElementById("checkinDate");
+        var checkOutDateInput = document.getElementById("checkoutDate");
+
+
+        // Add date picker to check-in date field
+        checkinDateInput.addEventListener("click", function () {
+            const dateInput = document.createElement("input");
+            dateInput.type = "date";
+            dateInput.style.display = "none";
+
+            // Add a change event listener to capture the selected date
+            dateInput.addEventListener("change", function() {
+                const selectedDate = this.value;
+                selectedDateDiv.textContent = `Selected Date: ${selectedDate}`;
+                // You can use the selectedDate for further processing (e.g., availability check)
+            });
+
+            // Append the input element and trigger a click to open the date picker
+            document.body.appendChild(dateInput);
+            dateInput.click();
+            document.body.removeChild(dateInput);
+        });
+
+        // Add date picker to check-in date field
+        checkOutDateInput.addEventListener("click", function () {
+            const dateInput = document.createElement("input");
+            dateInput.type = "date";
+            dateInput.style.display = "none";
+
+            // Add a change event listener to capture the selected date
+            dateInput.addEventListener("change", function() {
+                const selectedDate = this.value;
+                selectedDateDiv.textContent = `Selected Date: ${selectedDate}`;
+                // You can use the selectedDate for further processing (e.g., availability check)
+            });
+
+            // Append the input element and trigger a click to open the date picker
+            document.body.appendChild(dateInput);
+            dateInput.click();
+            document.body.removeChild(dateInput);
+        });
+
+
+
+        // Get the submit button
+        var submitButton = document.getElementById("submitButton");
+
+        // Add event listener for the submit button click
+        submitButton.addEventListener("click", function () {
+            // Hide the profile details div
+            alert("Profile creation was Successful, please proceed with bookings!");
+            profileDetails.style.display = "none";
+            setTimeout(function () {
+                successMessage.hide();
+            }, 2000);
+
+        });
+
+    });
+
+    // Find hotels button click event
+    function findHotelsList() {
+
+        var checkinDateInput = document.getElementById("checkinDate");
+        var checkoutDateInput = document.getElementById("checkoutDate");
+
+        // Get check-in and check-out dates
+        var checkinDate = new Date(checkinDateInput.value);
+        var checkoutDate = new Date(checkoutDateInput.value);
+
+        // Validate dates
+        if (!checkinDateInput.value || !checkoutDateInput.value || checkinDate >= checkoutDate) {
+            alert("Please select valid check-in and check-out dates.");
+            return;
+        }
+
+        // Display hotel list
+        displayHotelList();
+    }
+
+
+    // Function to display hypothetical hotel list
+    function displayHotelList() {
+        // Dummy hotel data (name, price, etc.)
+        var hotels = [
+            { name: "JW Marriot", price: "100/night", image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/ee/2d/9d/jw-marriott-hotel-mumbai.jpg?w=700&h=-1&s=1" },
+            { name: "Hilton", price: "120/night", image: "https://www.embassyindia.com/sites/default/files/styles/webp_style/public/hospitality/mobile-banner/2023-06/Hilton-Manyata-Mobile%20Version-Hilton%20%26%20HGI%20Manyata%20exterior%20evening%20shot-360X437%2004.jpg.webp?itok=KJKUcgBh"},
+            { name: "hotel Taj", price: "150/night", image: "https://live.staticflickr.com/3755/9199139969_a1c200d718_c.jpg" }
+        ];
+
+        // 1. Input Validation (Optional but recommended)
+        if (!hotels || !Array.isArray(hotels)) {
+            console.error("Invalid hotel data provided. Please ensure it's an array of objects.");
+            return;
+        }
+
+        // 2. Get Hotel List Element
+        var hotelList = document.getElementById("hotels");
+
+        // 3. Clear Previous Hotel List Items
+        hotelList.innerHTML = "";
+
+        // 4. Append Hotel List Items with Richer Formatting
+        var hotelTableBody = document.createElement("hotelTableBody");
+        hotelTableBody.innerHTML = ""; // Clear table body before populating
+
+        hotels.forEach(function(hotel) {
+            var tableRow = document.createElement("tr");
+            // Create a table row
+
+            // Create table cell for image
+            var imageCell = document.createElement("td");
+            var hotelImage = document.createElement("img");
+            hotelImage.src = hotel.image; // Assuming `hotel.image` contains the image path
+            hotelImage.style.height = '100px'; // Set image height (optional)
+            hotelImage.style.width = '100px'; // Set image width (optional)
+            imageCell.appendChild(hotelImage);
+            tableRow.appendChild(imageCell);
+
+            // Create table cell for hotel name
+            var nameCell = document.createElement("td");
+            nameCell.style.verticalAlign = 'top';
+            nameCell.style.fontWeight = 'bold';
+            nameCell.style.fontSize = '20px';
+            nameCell.style.color = 'black';
+            nameCell.style.paddingLeft = '20px';
+            nameCell.textContent = hotel.name;
+            nameCell.style.paddingLeft = '13px';
+            nameCell.style.whiteSpace = 'nowrap'; // Prevent text wrapping
+            tableRow.appendChild(nameCell);
+
+            // Create table cell for rating (optional)
+            var ratingCell = document.createElement("div");
+            var image = document.createElement("img");
+            ratingCell.style.verticalAlign = 'top';
+            ratingCell.classList.add("hotel-rating"); // Add CSS class for styling
+            image.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtO3KfeKh9Pr4Z-obXWe_Dm38UeIsj7o2h1SW295YT&s"; // Placeholder for dynamic rating
+            image.style.height = '20px';
+            ratingCell.appendChild(image);
+            nameCell.appendChild(ratingCell);
+
+            // Create table cell for "Book Now" button
+            var priceCell = document.createElement("td");
+            priceCell.style.verticalAlign = 'top';
+            priceCell.style.paddingLeft = '100px';
+            priceCell.style.paddingTop = '20px';
+            priceCell.style.color = 'black';
+            priceCell.textContent = hotel.price;
+            priceCell.style.whiteSpace = 'nowrap'; // Prevent text wrapping
+            tableRow.appendChild(priceCell);
+
+            // Create table cell for "Book Now" button
+            var bookNowCell = document.createElement("td");
+            bookNowCell.style.verticalAlign = 'top';
+            bookNowCell.style.paddingLeft = '100px';
+            bookNowCell.style.paddingTop = '20px';
+            var bookNowButton = document.createElement("button");
+            bookNowButton.textContent = "Book Now";
+            bookNowButton.style.whiteSpace = 'nowrap'; // Prevent text wrapping
+            bookNowButton.classList.add("book-now-button"); // Add CSS class for styling
+            bookNowButton.addEventListener("click", function() {
+                alert("Booking initiated for " + hotel.name); // Placeholder
+            });
+            bookNowCell.appendChild(bookNowButton);
+            tableRow.appendChild(bookNowCell);
+
+            // Append the table row to the table body
+            hotelTableBody.appendChild(tableRow);
+            var hotelListContainer = document.getElementById("hotelListContainer");
+            hotelListContainer.appendChild(hotelTableBody);
+            hotelListContainer.style.display = "block";
+            hotelListContainer.classList.add("fade-in");
+        });
+
+        // 5. Show Hotel List Container with Fade-in Effect (Optional)
+        var hotelListContainer = document.getElementById("hotelListContainer");
+        hotelListContainer.style.display = "block";
+        hotelListContainer.classList.add("fade-in");
+    }
+
+    function formatPrice(price) {
+        // Implement logic to format price based on your requirements (e.g., currency symbol, thousands separator)
+        // This example assumes a simple "$" prefix
+        return "$" + price;
+    }
+
+</script>
+
+<body>
+    <header class="header">
+        <div class="header--left-container">
+            <img class="header--logo" src="images/m-logo.svg" alt="">
+            <img class="resort-name--heading" src="images/mod-resort-name.svg" alt="">
+        </div>
+
+        <ul class="main-nav--list">
+            <li class="main-nav--list__item">Home</li>
+            <li class="main-nav--list__item">Reservations</li>
+            <li class="main-nav--list__item">Reward Center</li>
+            <li class="main-nav--list__item" id="profileButton">Profile</li>
+            <li class="main-nav--list__item">
+                <img class="globe-icon" src="images/globe-icon.svg" alt="">
+                <span class="languages-link">Languages</span>
+            </li>
+        </ul>
+    </header>
+
+    <main class="hero js-hero">
+        <nav class="sub-nav">
+            <div class="select-container">
+                <select onchange="callRESTAPI()" class="select-city js-select">
+                    <option value="">Where to?</option>
+                    <option value="Paris">Paris, France</option>
+                    <option value="Las Vegas">Las Vegas, USA</option>
+                    <option value="Cork">Cork, Ireland</option>
+                    <option value="San Francisco">San Francisco, USA</option>
+                    <option value="Miami">Miami, USA</option>
+                    <option value="Barcelona">Barcelona, Spain</option>
+                </select>
+                <svg class="select--arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
+                    <path d="M10 0L5 5 0 0z"></path>
+                </svg>
+            </div>
+            <div class="travel-dates"><span>Check In:</span><input type="date" id="checkinDate" placeholder="Check in">
+            </div>
+            <div class="travel-dates" >Check Out:<input type="date" id="checkoutDate" placeholder="Check Out">
+            </div>
+            <button class="button--submit" onclick="findHotelsList()" id="findHotels">Find it</button>
+        </nav>
+        <div class="details-container js-container">
+            <h1 class="h1 h1__city js-city"></h1>
+            <h5 class="h5 h5__country js-country"></h5>
+            <h5 class="h5 weather-label line line__condition">Weather Condition</h5>
+            <div class="weather-container">
+                <img class="weather-icon js-weather-icon" src="" alt="">
+                <span class="condition js-condition"></span>
+            </div>
+            <h5 class="h5 weather-label line line__temp">Temperature</h5>
+            <div class="weather-container">
+                <span class="factor js-tempF"></span> &#176; F <span class="factor">&nbsp;|</span><span
+                    class="factor js-tempC"></span> &#176; C
+            </div>
+            <h5 class="h5 weather-label line line__wind">Wind</h5>
+            <div class="weather-container">
+                <span class="factor wind-direction js-wind-direction"></span> @ <span
+                    class="factor mph js-mph"></span>MPH<span class="factor">&nbsp;|</span><span
+                    class="factor kph js-kph"></span> KPH
+            </div>
+            <h5 class="h5 weather-label line line__vis">Visibility</h5>
+            <div class="weather-container">
+                <span class="factor vis-miles js-vis-mi"></span>M <span class="factor">&nbsp;|</span><span
+                    class="factor vis-km js-vis-km"></span> KM
+            </div>
+        </div>`
+        <div id="hotelListContainer" style="display: none;">
+            <h2>Available Hotels</h2>
+            <ul id="hotels"></ul>
+        </div>
+        <div class="signup-form" style="display:none;">
+            <h2>Signup</h2>
+            <form>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="submitButton">Signup</button>
+                </div>
+            </form>
+        </div>
+        <div id="successMessage" style="display:none;">
+            Successfully registered!
+        </div>
+    </main>
+
+    <footer class="footer">
+        <svg class="footer--logo" width="126px" height="126px" viewBox="0 0 126 126" version="1.1"
+             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <rect id="path-1" x="17" y="17" width="81" height="81"></rect>
+                <filter x="-12.3%" y="-9.9%" width="124.7%" height="124.7%" filterUnits="objectBoundingBox"
+                        id="filter-2">
+                    <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                    <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                    <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1">
+                    </feComposite>
+                    <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix"
+                                   in="shadowBlurOuter1"></feColorMatrix>
+                </filter>
+            </defs>
+            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="M-Logo" transform="translate(7.000000, 4.000000)">
+                    <g>
+                        <g id="Rectangle-4"
+                           transform="translate(57.500000, 57.500000) rotate(45.000000) translate(-57.500000, -57.500000) ">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                            <rect stroke="#FFFFFF" stroke-width="5" stroke-linejoin="square" fill="#000000"
+                                  fill-rule="evenodd" x="19.5" y="19.5" width="76" height="76"></rect>
+                        </g>
+                        <polygon id="M" fill="#FFFFFF"
+                                 points="71.6855862 31.4937435 89.4509144 31.4937435 89.4509144 37.8919843 83.2568728 37.8919843 83.2568728 76.3835288 89.4509144 76.3835288 89.4509144 82.7817697 70.1540924 82.7817697 70.1540924 76.3835288 76.2120012 76.3835288 76.2120012 37.8919843 58.5828058 83.3263008 57.0513119 83.3263008 39.5582493 37.8919843 39.5582493 76.3835288 45.2077598 76.3835288 45.2077598 82.7817697 27 82.7817697 27 76.3835288 33.2280748 76.3835288 33.2280748 37.8919843 27 37.8919843 27 31.4937435 44.5951623 31.4937435 58.106341 66.6160016"></polygon>
+                    </g>
+                </g>
+            </g>
+        </svg>
+        <img class="resort-name--footer" src="images/mod-resort-name.svg" alt="">
+        <p class="footer-content">Make your travel experience better with <span class="bold">Mod Resorts</span> and
+            enjoy instant benefits at every hotel.</p>
+        <h6 class="footer-content footer-content__heading">GLOBAL SITES</h6>
+        <p class="footer-content footer-content__list">    العربية   |   简体中文  |  繁體中文  |  Dansk  |  Nederlands  |  Suomi  |  Français
+            |  Deutsch  |  Italiano  |  Norsk  |  Português  |  Pусский  |  Svenska  |  日本語  |  한국어  |  Español  |  Türkçe
+        </p>
+        <p class="footer-content footer-content__heading"><span class="bold">Mod Resorts</span></p>
+        <p class="footer-content footer-content__list">About MOD RESORTS | Site Map | Residences | Receive Our
+            Newsletter | Facebook | Twitter | Careers | Development | Future Openings | Press Center | Travel
+            Professionals | Accessibility</p>
+        <p class="footer-content footer-content__contact">Customer Support 1-800-867-5409</p>
+        <p class="footer-content footer-content__contact">(International) + 800 00 266 723</p>
+        <p class="footer-content footer-content__legal">MOD RESORTS Honors Discount Terms & Conditions</p>
+        <p class="footer-content footer-content__legal">Global Privacy Statement</p>
+        <p class="footer-content footer-content__legal">Cookies Statement</p>
+        <p class="footer-content footer-content__legal">Site Usage Agreement</p>
+        <p class="footer-content footer-content__legal">&copy; 2018 MOD RESORTS</p>
+        <p class="footer-content footer-content__legal">Powered by Weather Underground
+            <img class="header--weather--logo" width="120" height="33"
+                 src="https://icons.wxug.com/logos/PNG/wundergroundLogo_4c_rev_horz.png">
+        </p>
+    </footer>
+<script src="main.js"></script>
+</body>
+
+</html>
